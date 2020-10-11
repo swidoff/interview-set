@@ -3,8 +3,9 @@ Consolidated Stock Universe Membership
 
 Problem:
 
-    We would like to record changes to a universe of stocks over time in a space-efficient
-    way so that we can easily cache and query the universe in memory.
+    We would like to record changes to a universe of stocks over time
+    in a space-efficient way so that we can easily cache and query the
+    universe in memory.
 
 Constraints:
 
@@ -13,7 +14,8 @@ Constraints:
     To record the complete membership for each day for 20 years would require:
     5000 * 252 * 20 = 25 million records.
 
-    Rather than store the full membership on each day, we can store only the changes.
+    Rather than store the full membership on each day, we can store only
+    the changes.
 
 Example:
 
@@ -46,9 +48,7 @@ class Snapshot(object):
     Complete list of universe members IDs as of a particular date.
 
     * `dt` is the snapshot date
-    * `member_ids` contains the unique IDs of all set members on the date
-    * member IDs are in alphabetical order
-    * snapshots are ordered by increasing time
+    * `member_ids` contains the unique IDs of all set members on the date ordered alphabetically
     """
 
     dt: date
@@ -61,9 +61,7 @@ class Member(object):
     Records when a stock entered and left the universe.
 
     * `start` is the date on which the ID entered the universe
-    * `end` is the date on which the ID left the set
-    * `end == eot`  means the ID is still in the set
-    * records for the same ID in the universe may not have overlapping date ranges.
+    * `end` is the date on which the ID left the set, or `eot` if it remains in the set
     """
 
     id: str
@@ -72,5 +70,13 @@ class Member(object):
 
 
 def consolidate(snapshots: Tuple[Snapshot, ...]) -> Tuple[Member, ...]:
+    """
+    Consolidates the snapshots into a tuple of membership changes.
+
+    :param snapshots: a tuple of `Snapshot` objects in increasing order of `dt`.
+    :return: a tuple of `Member` objects, where there is one record per ID for each
+     continuous date range that it belonged to the universe. All records for the same ID
+     must not overlap in time and must have a gap between ranges of at least one date.
+    """
     pass
 
