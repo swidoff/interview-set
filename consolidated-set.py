@@ -74,9 +74,10 @@ def consolidate(snapshots: Tuple[Snapshot, ...]) -> Tuple[Member, ...]:
     Consolidates the snapshots into a tuple of membership changes.
 
     :param snapshots: a tuple of `Snapshot` objects in increasing order of `dt`
-    :return: a tuple of `Member` objects, where there is one record per ID for each
-     continuous date range that it belonged to the universe. All records for the same ID
-     must not overlap in time and must have a gap between ranges of at least one date.
+
+    :return: a tuple of `Member` objects, where there is one record per ID for
+     each continuous date range that it belonged to the universe. All records
+     for the same ID must not overlap in time and must have a gap between ranges
+     of at least one date.
     """
     pass
-
