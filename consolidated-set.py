@@ -48,7 +48,7 @@ class Snapshot(object):
     Complete list of universe members IDs as of a particular date.
 
     * `dt` is the snapshot date
-    * `member_ids` contains the unique IDs of all set members on the date ordered alphabetically
+    * `member_ids` contains the unique IDs of all members ordered alphabetically
     """
 
     dt: date
@@ -60,8 +60,8 @@ class Member(object):
     """
     Records when a stock entered and left the universe.
 
-    * `start` is the date on which the ID entered the universe
-    * `end` is the date on which the ID left the set, or `eot` if it remains in the set
+    * `start` is the date the ID entered the universe
+    * `end` is the date the ID left the universe, or `eot` if it hasn't left
     """
 
     id: str
@@ -73,7 +73,7 @@ def consolidate(snapshots: Tuple[Snapshot, ...]) -> Tuple[Member, ...]:
     """
     Consolidates the snapshots into a tuple of membership changes.
 
-    :param snapshots: a tuple of `Snapshot` objects in increasing order of `dt`.
+    :param snapshots: a tuple of `Snapshot` objects in increasing order of `dt`
     :return: a tuple of `Member` objects, where there is one record per ID for each
      continuous date range that it belonged to the universe. All records for the same ID
      must not overlap in time and must have a gap between ranges of at least one date.
