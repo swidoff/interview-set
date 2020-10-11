@@ -3,14 +3,15 @@ Consolidated Stock Universe Membership
 
 Problem:
 
-    We would like to record changes to a universe of stocks over time in a space-efficient way so that we easily
-    cache and query the universe in memory.
+    We would like to record changes to a universe of stocks over time in a space-efficient
+    way so that we can easily cache and query the universe in memory.
 
 Constraints:
 
     Stock universes can have as many as 5000 assets and can change daily.
 
-    To record the complete membership for each day for 20 years would require 5000 * 252 * 20 = 25 million records.
+    To record the complete membership for each day for 20 years would require:
+    5000 * 252 * 20 = 25 million records.
 
     Rather than store the full membership on each day, we can store only the changes.
 
