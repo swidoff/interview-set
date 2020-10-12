@@ -80,4 +80,21 @@ def consolidate(snapshots: Tuple[Snapshot, ...]) -> Tuple[Member, ...]:
      for the same ID must not overlap in time and must have a gap between ranges
      of at least one date.
     """
-    pass
+    return ()
+
+
+snapshots = (
+    Snapshot(dt=date(2020, 6, 1), members_ids=["AAPL", "BRK.B", "CSCO"]),
+    Snapshot(dt=date(2020, 7, 1), members_ids=["AAPL", "CSCO", "DISH"]),
+    Snapshot(dt=date(2020, 8, 1), members_ids=["AAPL", "BRK.B", "DISH"]),
+)
+
+universe = (
+    Member(id="AAPL", start=date(2020, 6, 1)),
+    Member(id="BRK.B", start=date(2020, 6, 1), end=date(2020, 7, 1)),
+    Member(id="BRK.B", start=date(2020, 8, 1)),
+    Member(id="CSCO", start=date(2020, 6, 1), end=date(2020, 8, 1)),
+    Member(id="DISH", start=date(2020, 7, 1)),
+)
+
+assert consolidate(snapshots) == universe
