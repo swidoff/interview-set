@@ -22,8 +22,8 @@ Example:
     # Input
     snapshots = (
         Snapshot(dt=date(2020, 6, 1), members_ids=["AAPL", "BRK.B", "CSCO" ]),
-        Snapshot(dt=date(2020, 7, 1), members_ids=["AAPL", "CSCO", "DISH ]),
-        Snapshot(dt=date(2020, 8, 1), members_ids=["AAPL", "BRK.B", "DISH ]),
+        Snapshot(dt=date(2020, 7, 1), members_ids=["AAPL", "CSCO", "DISH" ]),
+        Snapshot(dt=date(2020, 8, 1), members_ids=["AAPL", "BRK.B", "DISH" ]),
     )
 
     # Output
