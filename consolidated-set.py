@@ -16,24 +16,6 @@ Constraints:
 
     Rather than store the full membership on each day, we can store only
     the changes.
-
-Example:
-
-    # Input
-    snapshots = (
-        Snapshot(dt=date(2020, 6, 1), members_ids=["AAPL", "BRK.B", "CSCO" ]),
-        Snapshot(dt=date(2020, 7, 1), members_ids=["AAPL", "CSCO", "DISH" ]),
-        Snapshot(dt=date(2020, 8, 1), members_ids=["AAPL", "BRK.B", "DISH" ]),
-    )
-
-    # Output
-    universe = (
-        Member(id="AAPL", start=date(2020, 6, 1)),
-        Member(id="BRK.B", start=date(2020, 6, 1), end=date(2020, 7, 1)),
-        Member(id="BRK.B", start=date(2020, 8, 1)),
-        Member(id="CSCO", start=date(2020, 6, 1), end=date(2020, 8, 1)),
-        Member(id="DISH", start=date(2020, 7, 1)),
-    )
 """
 from dataclasses import dataclass
 from datetime import date
@@ -48,11 +30,11 @@ class Snapshot(object):
     Complete list of universe members IDs as of a particular date.
 
     * `dt` is the snapshot date
-    * `member_ids` contains the unique IDs of all members ordered alphabetically
+    * `ids` contains the unique IDs of all members ordered alphabetically
     """
 
     dt: date
-    members_ids: List[str]
+    ids: List[str]
 
 
 @dataclass(frozen=True)
@@ -83,17 +65,20 @@ def consolidate(snapshots: Tuple[Snapshot, ...]) -> Tuple[Member, ...]:
     return ()
 
 
+# Example:
+
 snapshots = (
-    Snapshot(dt=date(2020, 6, 1), members_ids=["AAPL", "BRK.B", "CSCO"]),
-    Snapshot(dt=date(2020, 7, 1), members_ids=["AAPL", "CSCO", "DISH"]),
-    Snapshot(dt=date(2020, 8, 1), members_ids=["AAPL", "BRK.B", "DISH"]),
+    Snapshot(dt=date(2020, 6, 1), ids=["AAPL", "BRK.B", "CSCO"]),
+    Snapshot(dt=date(2020, 7, 1), ids=["AAPL", "CSCO", "DISH"]),
+    Snapshot(dt=date(2020, 8, 1), ids=["AAPL", "CSCO", "DISH"]),
+    Snapshot(dt=date(2020, 9, 1), ids=["AAPL", "BRK.B", "DISH"]),
 )
 
 universe = (
     Member(id="AAPL", start=date(2020, 6, 1)),
     Member(id="BRK.B", start=date(2020, 6, 1), end=date(2020, 7, 1)),
-    Member(id="BRK.B", start=date(2020, 8, 1)),
-    Member(id="CSCO", start=date(2020, 6, 1), end=date(2020, 8, 1)),
+    Member(id="BRK.B", start=date(2020, 9, 1)),
+    Member(id="CSCO", start=date(2020, 6, 1), end=date(2020, 9, 1)),
     Member(id="DISH", start=date(2020, 7, 1)),
 )
 
