@@ -10,6 +10,7 @@ Problem:
 Constraints:
 
     Stock universes can have as many as 5000 assets and can change daily.
+    But the changes are generally few day-over-day.
 
     To record the complete membership for each day for 20 years would require:
     5000 * 252 * 20 = 25 million records.
