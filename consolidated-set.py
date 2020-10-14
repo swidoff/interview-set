@@ -1,86 +1,46 @@
 """
 Consolidated Stock Universe Membership
-
-Problem:
-
-    We would like to record changes to a universe of stocks over time
-    in a space-efficient way so that we can easily cache and query the
-    universe in memory.
-
-Constraints:
-
-    Stock universes can have as many as 5000 assets and can change daily.
-    But the changes are generally few day-over-day.
-
-    To record the complete membership for each day for 20 years would require:
-    5000 * 252 * 20 = 25 million records.
-
-    Rather than store the full membership on each day, we can store only
-    the changes.
 """
-from dataclasses import dataclass
+from collections import namedtuple
 from datetime import date
-from typing import List, Tuple
 
-eot = date(9999, 12, 31)
+Member = namedtuple("Member", ["ticker", "start", "end"])
 
-
-@dataclass(frozen=True)
-class Snapshot(object):
-    """
-    Complete list of universe members IDs as of a particular date.
-
-    * `dt` is the snapshot date
-    * `ids` contains the unique IDs of all members ordered alphabetically
-    """
-
-    dt: date
-    ids: List[str]
-
-
-@dataclass(frozen=True)
-class Member(object):
-    """
-    Records when a stock entered and left the universe.
-
-    * `start` is the date the ID entered the universe
-    * `end` is the date the ID left the universe, or `eot` if it hasn't left
-    """
-
-    id: str
-    start: date
-    end: date = eot
-
-
-def consolidate(snapshots: Tuple[Snapshot, ...]) -> Tuple[Member, ...]:
-    """
-    Consolidates the snapshots into a tuple of membership changes.
-
-    :param snapshots: a tuple of `Snapshot` objects in increasing order of `dt`
-
-    :return: a tuple of `Member` objects, where there is one record per ID for
-     each continuous date range that it belonged to the universe. All records
-     for the same ID must not overlap in time and must have a gap between ranges
-     of at least one date.
-    """
-    return ()
-
+# End of time
+EOT = date(9999, 12, 31)
 
 # Example:
 
-snapshots = (
-    Snapshot(dt=date(2020, 6, 1), ids=["AAPL", "BRK.B", "CSCO"]),
-    Snapshot(dt=date(2020, 7, 1), ids=["AAPL", "CSCO", "DISH"]),
-    Snapshot(dt=date(2020, 8, 1), ids=["AAPL", "CSCO", "DISH"]),
-    Snapshot(dt=date(2020, 9, 1), ids=["AAPL", "BRK.B", "DISH"]),
-)
+snapshots = [
+    {"date": date(2020, 6, 1), "tickers": ["AAPL", "BRK.B", "CSCO"]},
+    {"date": date(2020, 7, 1), "tickers": ["AAPL", "CSCO", "DISH"]},
+    {"date": date(2020, 8, 1), "tickers": ["AAPL", "CSCO", "DISH"]},
+    {"date": date(2020, 9, 1), "tickers": ["AAPL", "BRK.B", "DISH"]},
+]
 
-universe = (
-    Member(id="AAPL", start=date(2020, 6, 1)),
-    Member(id="BRK.B", start=date(2020, 6, 1), end=date(2020, 7, 1)),
-    Member(id="BRK.B", start=date(2020, 9, 1)),
-    Member(id="CSCO", start=date(2020, 6, 1), end=date(2020, 9, 1)),
-    Member(id="DISH", start=date(2020, 7, 1)),
-)
+expected_universe = [
+    {"ticker": "AAPL", "start": date(2020, 6, 1), "end": EOT},
+    {"ticker": "BRK.B", "start": date(2020, 6, 1), "end": date(2020, 7, 1)},
+    {"ticker": "BRK.B", "start": date(2020, 9, 1), "end": EOT},
+    {"ticker": "CSCO", "start": date(2020, 6, 1), "end": date(2020, 9, 1)},
+    {"ticker": "DISH", "start": date(2020, 7, 1), "end": EOT},
+]
 
-assert consolidate(snapshots) == universe
+
+def consolidate(snapshots):
+    """
+    Consolidates the snapshots into a tuple of membership changes.
+
+    :param snapshots: a list of snapshots dicts in increasing order of `date`
+
+    :return: a list of `Member` dicts.
+        * one record per `id` for date range that it belonged to the universe
+        * records for the same `id` must not overlap
+        * records for the same `id` must have a gap of at least one date
+    """
+    return []
+
+
+actual_universe = consolidate(snapshots)
+print(actual_universe)
+assert actual_universe == expected_universe
