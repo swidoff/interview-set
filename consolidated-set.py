@@ -1,10 +1,7 @@
 """
 Consolidated Stock Universe Membership
 """
-from collections import namedtuple
 from datetime import date
-
-Member = namedtuple("Member", ["ticker", "start", "end"])
 
 # End of time
 EOT = date(9999, 12, 31)
